@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { alpha, styled } from '@mui/material/styles';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,6 +14,20 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import SitemarkIcon from './SitemarkIcon';
 import ColorModeIconDropdown from '../shared-theme/ColorModeIconDropdown';
+import Avatar from '@mui/material/Avatar';
+import { useContext } from 'react';
+import { SessionContext, AuthenticationContext } from '../components/AuthenticationProvider';
+
+interface Session {
+  user: {
+    name: string | null;
+    email: string;
+    image: string | null;
+  };
+}
+
+// Feature flag to control the visibility of the Sign-up button
+const showSignUpButton = false; // Change to `true` to display the button
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -31,6 +45,8 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 export default function AppAppBar() {
   const [open, setOpen] = React.useState(false);
+  const session = useContext(SessionContext) as Session | null;
+  const authentication = useContext(AuthenticationContext);
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -52,39 +68,41 @@ export default function AppAppBar() {
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
             <SitemarkIcon />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <Button variant="text" color="info" size="small">
-                Features
-              </Button>
-              <Button variant="text" color="info" size="small">
-                Testimonials
-              </Button>
-              <Button variant="text" color="info" size="small">
-                Highlights
-              </Button>
-              <Button variant="text" color="info" size="small">
-                Pricing
-              </Button>
-              <Button variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
-                FAQ
-              </Button>
-              <Button variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
-                Blog
-              </Button>
+              <Button variant="text" color="info" size="small">Learn</Button>
+              <Button variant="text" color="info" size="small">Feedback</Button>
+              <Button variant="text" color="info" size="small">Community</Button>
+              <Button variant="text" color="info" size="small">Quizzes</Button>
+              <Button variant="text" color="info" size="small" sx={{ minWidth: 0 }}>Resources</Button>
+              <Button variant="text" color="info" size="small" sx={{ minWidth: 0 }}>Articles</Button>
             </Box>
           </Box>
-          <Box
-            sx={{
-              display: { xs: 'none', md: 'flex' },
-              gap: 1,
-              alignItems: 'center',
-            }}
-          >
-            <Button component={Link} to="/sign-in" color="primary" variant="text" size="small">
-              Sign in
-            </Button>
-            <Button component={Link} to="/sign-up" color="primary" variant="contained" size="small">
-              Sign up
-            </Button>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
+            {session ? (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Avatar 
+                  src={session.user.image || undefined} 
+                  alt={session.user.name || 'User'} 
+                  sx={{ width: 40, height: 40 }} 
+                />
+                {authentication && (
+                  <Button onClick={authentication.signOut} color="primary" variant="outlined">
+                    Sign out
+                  </Button>
+                )}
+              </Box>
+            ) : (
+              <>
+                <Button component={Link} to="/sign-in" color="primary" variant="text" size="small">
+                  Sign in
+                </Button>
+                {/* Conditionally render the Sign-up button based on `showSignUpButton` */}
+                {showSignUpButton && (
+                  <Button component={Link} to="/sign-up" color="primary" variant="contained" size="small">
+                    Sign up
+                  </Button>
+                )}
+              </>
+            )}
             <ColorModeIconDropdown />
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
@@ -108,23 +126,36 @@ export default function AppAppBar() {
                     <CloseRoundedIcon />
                   </IconButton>
                 </Box>
-                <MenuItem>Features</MenuItem>
-                <MenuItem>Testimonials</MenuItem>
-                <MenuItem>Highlights</MenuItem>
-                <MenuItem>Pricing</MenuItem>
-                <MenuItem>FAQ</MenuItem>
-                <MenuItem>Blog</MenuItem>
+                <MenuItem>Learn</MenuItem>
+                <MenuItem>Feedback</MenuItem>
+                <MenuItem>Community</MenuItem>
+                <MenuItem>Quizzes</MenuItem>
+                <MenuItem>Resources</MenuItem>
+                <MenuItem>Articles</MenuItem>
                 <Divider sx={{ my: 3 }} />
-                <MenuItem>
-                  <Button component={Link} to="/sign-up" color="primary" variant="contained" fullWidth>
-                    Sign up
-                  </Button>
-                </MenuItem>
-                <MenuItem>
-                  <Button component={Link} to="/sign-in" color="primary" variant="outlined" fullWidth>
-                    Sign in
-                  </Button>
-                </MenuItem>
+                {session ? (
+                  <MenuItem>
+                    <Button onClick={authentication?.signOut} color="primary" variant="outlined" fullWidth>
+                      Sign out
+                    </Button>
+                  </MenuItem>
+                ) : (
+                  <>
+                    {/* Conditionally render the Sign-up button in the drawer based on `showSignUpButton` */}
+                    {showSignUpButton && (
+                      <MenuItem>
+                        <Button component={Link} to="/sign-up" color="primary" variant="contained" fullWidth>
+                          Sign up
+                        </Button>
+                      </MenuItem>
+                    )}
+                    <MenuItem>
+                      <Button component={Link} to="/sign-in" color="primary" variant="outlined" fullWidth>
+                        Sign in
+                      </Button>
+                    </MenuItem>
+                  </>
+                )}
               </Box>
             </Drawer>
           </Box>

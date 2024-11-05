@@ -185,7 +185,7 @@ export default function MainContent() {
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
       <div>
         <Typography variant="h1" gutterBottom>
-          Blog
+        Oops! This website is still under construction—kind of like my cooking skills. Hang tight, Sign-ups will be ready soon!
         </Typography>
         <Typography>Stay in the loop with the latest about our products</Typography>
       </div>

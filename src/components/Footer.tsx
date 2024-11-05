@@ -14,6 +14,9 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/X';
 import SitemarkIcon from './SitemarkIcon';
 
+// Feature flag to control the visibility of the Subscribe button
+const showSubscribeButton = false; // Change to `true` to display the button
+
 function Copyright() {
   return (
     <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
@@ -64,10 +67,10 @@ export default function Footer() {
                 gutterBottom
                 sx={{ fontWeight: 600, mt: 2 }}
               >
-                Join the newsletter
+                Our newsletter will be launching soon—stay tuned for updates!
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
-                Subscribe for weekly updates. No spams ever!
+                Subscribe for weekly updates. No spam, just the good stuff!
               </Typography>
               <InputLabel htmlFor="email-newsletter">Email</InputLabel>
               <Stack direction="row" spacing={1} useFlexGap>
@@ -87,14 +90,17 @@ export default function Footer() {
                   }}
                   sx={{ width: '250px' }}
                 />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  sx={{ flexShrink: 0 }}
-                >
-                  Subscribe
-                </Button>
+                {/* Conditionally render the Subscribe button based on `showSubscribeButton` */}
+                {showSubscribeButton && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    sx={{ flexShrink: 0 }}
+                  >
+                    Subscribe
+                  </Button>
+                )}
               </Stack>
             </Box>
           </Box>
@@ -109,19 +115,19 @@ export default function Footer() {
               Product
             </Typography>
             <Link color="text.secondary" variant="body2" href="#">
-              Features
+              Learn
             </Link>
             <Link color="text.secondary" variant="body2" href="#">
-              Testimonials
+              Feedback
             </Link>
             <Link color="text.secondary" variant="body2" href="#">
-              Highlights
+              Community
             </Link>
             <Link color="text.secondary" variant="body2" href="#">
-              Pricing
+              Quizzes
             </Link>
             <Link color="text.secondary" variant="body2" href="#">
-              FAQs
+              Resourcess
             </Link>
           </Box>
           <Box
@@ -196,7 +202,7 @@ export default function Footer() {
             <IconButton
               color="inherit"
               size="small"
-              href="https://github.com/mui"
+              href=""
               aria-label="GitHub"
               sx={{ alignSelf: 'center' }}
             >
@@ -205,7 +211,7 @@ export default function Footer() {
             <IconButton
               color="inherit"
               size="small"
-              href="https://x.com/MaterialUI"
+              href=""
               aria-label="X"
               sx={{ alignSelf: 'center' }}
             >
@@ -214,7 +220,7 @@ export default function Footer() {
             <IconButton
               color="inherit"
               size="small"
-              href="https://www.linkedin.com/company/mui/"
+              href="https://www.linkedin.com/in/jyotirmoy-das-deep/"
               aria-label="LinkedIn"
               sx={{ alignSelf: 'center' }}
             >
